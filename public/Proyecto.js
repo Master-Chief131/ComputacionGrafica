@@ -77,13 +77,10 @@ mtlLoader.load('models/bowser.mtl', (material) => {
 	light.position.set(0,250,0);
 	scene.add(light);
 
-	var extrudeSettings = {
-  depth: 2, // Profundidad de la extrusión
-  bevelEnabled: false // Desactivar el biselado de los bordes
-};
+
 
     var floorMaterial = new THREE.MeshLambertMaterial({color: 0xFF4589, side: THREE.DoubleSide})
-    const floorGeometry = new THREE.ExtrudeGeometry( 550, 64 ); 
+    const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
 	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
 	floor.position.y = -0.5;
 	floor.rotation.x = Math.PI / 2;
