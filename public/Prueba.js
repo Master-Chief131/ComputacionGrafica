@@ -2,14 +2,9 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "./jsm/loaders/OBJLoader.js";
 import { MTLLoader } from "./jsm/loaders/MTLLoader.js";
-import Stats from 'three/addons/libs/stats.module.js';
 
 // standard global variables
-var container, scene, camera, renderer, controls, stats, parameters;
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
-const materials = [];
-
+var container, scene, camera, renderer, controls;
 var clock = new THREE.Clock();
 // custom global variables
 var cube;
@@ -32,47 +27,17 @@ function init() {
   scene.add(camera);
   camera.position.set(0, 150, 400);
   camera.lookAt(scene.position);
-
-  const geometry = new THREE.BufferGeometry();
-  const vertices = [];
-
   // RENDERER
-  renderer = new THREE.WebGLRenderer({
-    antialias: true 
-  });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixcelRatio);
-  renderer.shadowMap.enabled = true;
-  renderer.capabilities.logarithmicDepthBuffer = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.physicallyCorrectLights = true;
-  renderer.toneMappingExposure = Math.pow(0.9, 4.0);
-  renderer.toneMappingExposure = THREE.ReinhardToneMapping;
-  document.body.appendChild(renderer.domElement);
-  
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   container = document.getElementById("container");
   container.appendChild(renderer.domElement);
-
-  // renderer = new THREE.WebGLRenderer();
-  // renderer.setPixelRatio( window.devicePixelRatio );
-  // renderer.setSize( window.innerWidth, window.innerHeight);
-  // document.body.appendChild( renderer.domElement);
-  stats = new Stats();
-  document.body.appendChild( stats.dom);
-    
-  document.body.style.touchAction= 'none';
-  document.body.addEventListener( 'pointermove', onPointerMove);
-  window.addEventListener( 'resize', onWindowResize);
-  
   // CONTROLS
   controls = new OrbitControls(camera, renderer.domElement);
 
   const textureLoader = new THREE.TextureLoader();
-  const fondoEspacio = textureLoader.load("textures/fondo_space.jpg");
-  const sprite1 = textureLoader.load( 'textures/luzdeprueba1.png' );
-  const fpeach = textureLoader.load('textures/bgpch.png');
-  scene.background = fpeach;
+  const texture = textureLoader.load("textures/bg.jpeg");
+  scene.background = texture;
 
   const mtlLoader = new MTLLoader();
   mtlLoader.load("models/bowser.mtl", (material) => {
@@ -163,7 +128,8 @@ function init() {
       }
     );
   });
-
+ 
+  /* No funciona aun
   //Agregar la silla
   const mtlLoader4 = new MTLLoader();
   mtlLoader4.load("models/silla.mtl", (material4) => {
@@ -176,18 +142,16 @@ function init() {
 	  (object4) => {
 		scene.add(object4);
 		//move object to the top
-		object4.position.y = 30;
+		object4.position.y = 80;
 		//to the left of the box
-		object4.position.x = -375;
-		object4.position.z = -60;
+		object4.position.x = -50;
+		object4.position.z = -40;
 		//make the object bigger
-		object4.scale.x = 55;
+		object4.scale.x = 25;
 		object4.scale.y = 25;
 		object4.scale.z = 25;
-    // Realizar la rotación del objeto
-    // object.rotation.x = Math.PI / 4; // Rotación en el eje x
-    object4.rotation.y = Math.PI / 2; // Rotación en el eje y
-    // object.rotation.z = Math.PI / 3; // Rotación en el eje z
+		//rotate the object horizontally
+		object4.rotation.y = 3;
 	  },
 	  (xhr) => {
 		console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
@@ -197,81 +161,28 @@ function init() {
 	  }
 	);
 	  });
+*/
 
-  for (let i = 0; i < 10000; i++){
-    const x = Math.random() * 2000 - 1000;
-    const y = Math.random() * 2000 - 1000;
-    const z = Math.random() * 2000 - 1000;
-    vertices.push( x, y, z );
-  }
-  geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3));
 
-  parameters = [
-    // [[0.8, 1, 0.5 ], sprite1, 20 ],
-    // [[0.8, 1, 0.5 ], sprite1, 15 ],
-    [[0.8, 1, 0.5 ], sprite1, 20 ],
-    // [[0.8, 1, 0.5 ], sprite1, 8 ],
-    // [[0.8, 1, 0.5 ], sprite1, 5 ],
-  ];
-
-  for (let i = 0; i < parameters.length; i ++){
-    const color = parameters[ i ][ 0 ];
-    const sprite = parameters[ i ][ 1 ];
-    const size = parameters[ i ][ 2 ];
-    materials[ i ] = new THREE.PointsMaterial({
-        size: size, map: sprite, blending: THREE.AdditiveBlending, depthTest: false, transparent: true
-    });
-    materials[ i ].color.setHSL( color[ 0 ], color[ 1 ], color[ 2 ]);
-    const particles = new THREE.Points( geometry, materials[ i ]);
-    particles.rotation.x = Math.random() * 6;
-    particles.rotation.y = Math.random() * 6;
-    particles.rotation.z = Math.random() * 6;
-    scene.add( particles );
-  }
-
-  const skyBoxGeometry = new THREE.SphereGeometry(3000, 1000, 1000);
+  const skyBoxGeometry = new THREE.BoxGeometry(10000, 10000, 10000);
   const skyBoxMaterial = new THREE.MeshBasicMaterial({
-    map : fondoEspacio,
-    opacity: 0.3,
+    color: 0x990099,
     side: THREE.BackSide,
-    transparent: true,
   });
   const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
   scene.add(skyBox);
-  const speed = 0.01; // Velocidad de movimiento del skybox
-
-  // Actualizar la posición del skybox
-  skyBox.position.x += speed;
-  skyBox.position.y += speed;
-  skyBox.position.z += speed;
-  // scene.fog = new THREE.FogExp2(0x990099, 0.00025);
+  scene.fog = new THREE.FogExp2(0x990099, 0.00025);
   
 
   // LIGHT
   var light = new THREE.AmbientLight(0xffffff, 3.5);
-  light.position.set(0, 250, 0);
   scene.add(light);
   //add a light that illuminates everything evenly
-}
-
-function onWindowResize(){
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize( window.innerWidth, window.innerHeight);
-}
-
-function onPointerMove( event ){
-  if ( event.isPrimary === false ) return;
-  mouseX = event.clientX - windowHalfX;
-  mouseY = event.clientY - windowHalfY;
 }
 
 function animate() {
   requestAnimationFrame(animate);
   render();
-  stats.update();
   update();
 }
 
@@ -280,14 +191,5 @@ function update() {
 }
 
 function render() {
-  const time = Date.now() * 0.00005;
-
-  for ( let i = 0; i < scene.children.length; i ++){
-        const object = scene.children[ i ];
-        if ( object instanceof THREE.Points){
-            object.rotation.y = time * (i < 4 ? i + 1 : - (i + 1 ));
-        }
-    }
-    
   renderer.render(scene, camera);
 }
