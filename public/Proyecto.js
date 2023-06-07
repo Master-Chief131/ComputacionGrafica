@@ -1,9 +1,8 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "./jsm/loaders/OBJLoader.js";
-import { FBXLoader } from "./jsm/loaders/FBXLoader.js";
 import { MTLLoader } from "./jsm/loaders/MTLLoader.js";
-import Stats from "three/addons/libs/stats.module.js";
+import Stats from 'three/addons/libs/stats.module.js';
 
 // standard global variables
 var container, scene, camera, renderer, controls, stats, parameters;
@@ -12,7 +11,7 @@ let windowHalfY = window.innerHeight / 2;
 const materials = [];
 
 var clock = new THREE.Clock();
-// custom global variabless
+// custom global variables
 var cube;
 
 init();
@@ -39,6 +38,7 @@ function init() {
 
   // RENDERER
   renderer = new THREE.WebGLRenderer({
+    antialias: true 
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixcelRatio);
@@ -50,7 +50,7 @@ function init() {
   renderer.toneMappingExposure = Math.pow(0.9, 4.0);
   renderer.toneMappingExposure = THREE.ReinhardToneMapping;
   document.body.appendChild(renderer.domElement);
-
+  
   container = document.getElementById("container");
   container.appendChild(renderer.domElement);
 
@@ -59,20 +59,20 @@ function init() {
   // renderer.setSize( window.innerWidth, window.innerHeight);
   // document.body.appendChild( renderer.domElement);
   stats = new Stats();
-  document.body.appendChild(stats.dom);
-
-  document.body.style.touchAction = "none";
-  document.body.addEventListener("pointermove", onPointerMove);
-  window.addEventListener("resize", onWindowResize);
-
+  document.body.appendChild( stats.dom);
+    
+  document.body.style.touchAction= 'none';
+  document.body.addEventListener( 'pointermove', onPointerMove);
+  window.addEventListener( 'resize', onWindowResize);
+  
   // CONTROLS
   controls = new OrbitControls(camera, renderer.domElement);
 
   const textureLoader = new THREE.TextureLoader();
   const fondoEspacio = textureLoader.load("textures/fondo_space.jpg");
   // const fondoEspacio = textureLoader.load("models/SKYBOX_sphere.jpg");
-  const sprite1 = textureLoader.load("textures/luzdeprueba1.png");
-  const fpeach = textureLoader.load("textures/bgpch.png");
+  const sprite1 = textureLoader.load( 'textures/luzdeprueba1.png' );
+  const fpeach = textureLoader.load('textures/bgpch.png');
   scene.background = fpeach;
 
   const mtlLoader = new MTLLoader();
@@ -85,18 +85,16 @@ function init() {
       "models/bowser.obj",
       (object) => {
         scene.add(object);
-        //rotate the object horizontally
-        object.rotation.y = -0.12;
         //move object to the top
-        object.position.y = 115;
+        object.position.y = 70;
         //to the left of the box
-        object.position.x = -405;
+        object.position.x = -290;
 
-        object.position.z = -90;
+        object.position.z = -60;
         //make the object bigger
-        object.scale.x = 23;
-        object.scale.y = 23;
-        object.scale.z = 23;
+        object.scale.x = 15;
+        object.scale.y = 15;
+        object.scale.z = 15;
       },
       (xhr) => {
         console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
@@ -136,6 +134,7 @@ function init() {
     );
   });
 
+  //add the piano
   const mtlLoader3 = new MTLLoader();
   mtlLoader3.load("models/piano1.mtl", (material3) => {
     material3.preload();
@@ -150,11 +149,11 @@ function init() {
         object3.position.y = 0;
         //to the left of the box
         object3.position.x = -130;
-        object3.position.z = -40;
+		object3.position.z = -40;
         //make the object bigger
-        object3.scale.x = 50;
-        object3.scale.y = 50;
-        object3.scale.z = 50;
+        object3.scale.x = 25;
+        object3.scale.y = 25;
+        object3.scale.z = 25;
         //rotate the object horizontally
         object3.rotation.y = 3;
       },
@@ -170,33 +169,36 @@ function init() {
   //Agregar la silla
   const mtlLoader4 = new MTLLoader();
   mtlLoader4.load("models/silla.mtl", (material4) => {
-    material4.preload();
-    console.log(material4);
-    const objLoader4 = new OBJLoader();
-    objLoader4.setMaterials(material4);
-    objLoader4.load(
-      "models/silla.obj",
-      (object4) => {
-        scene.add(object4);
-        //move object to the top
-        object4.position.y = 20;
-        //to the left of the box
-        object4.position.x = -535;
-        object4.position.z = -90;
-        //make the object bigger
-        object4.scale.x = 55;
-        object4.scale.y = 35;
-        object4.scale.z = 55;
-        object4.rotation.y = Math.PI / 2; // Rotación en el eje y
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  });
+	material4.preload();
+	console.log(material4);
+	const objLoader4 = new OBJLoader();
+	objLoader4.setMaterials(material4);
+	objLoader4.load(
+	  "models/silla.obj",
+	  (object4) => {
+		scene.add(object4);
+		//move object to the top
+		object4.position.y = 30;
+		//to the left of the box
+		object4.position.x = -375;
+		object4.position.z = -60;
+		//make the object bigger
+		object4.scale.x = 55;
+		object4.scale.y = 25;
+		object4.scale.z = 25;
+    // Realizar la rotación del objeto
+    // object.rotation.x = Math.PI / 4; // Rotación en el eje x
+    object4.rotation.y = Math.PI / 2; // Rotación en el eje y
+    // object.rotation.z = Math.PI / 3; // Rotación en el eje z
+	  },
+	  (xhr) => {
+		console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+	  },
+	  (error) => {
+		console.log(error);
+	  }
+	);
+	  });
 
   //Agregar la flor de fuego
   const mtlLoader5 = new MTLLoader();
@@ -299,73 +301,66 @@ function init() {
         }
       );
         });
+        
+      const fbxLoader = new FBXLoader();
+      fbxLoader.load(
+        "models/Star.fbx",
+        (object5) => {
+          scene.add(object5);
+          // Ajusta la posición, escala y rotación del modelo según tus necesidades
+          //move object to the top
+          object5.position.y = 230;
+          //to the left of the box
+          object5.position.x = -130;
+          object5.position.z = -40;
+          //make the object bigger
+          object5.scale.x = 0.35;
+          object5.scale.y = 0.35;
+          object5.scale.z = 0.35;
+          animateRotation(object5, "y", 0.01);
+        },
+        (xhr) => {
+          console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        },
+        (error) => {
+          console.log("An error occurred while loading the FBX file:", error);
+        }
+      );
 
-  const fbxLoader = new FBXLoader();
-  fbxLoader.load(
-    "models/Star.fbx",
-    (object5) => {
-      scene.add(object5);
-      // Ajusta la posición, escala y rotación del modelo según tus necesidades
-      //move object to the top
-      object5.position.y = 230;
-      //to the left of the box
-      object5.position.x = -130;
-      object5.position.z = -40;
-      //make the object bigger
-      object5.scale.x = 0.35;
-      object5.scale.y = 0.35;
-      object5.scale.z = 0.35;
-      animateRotation(object5, "y", 0.01);
-    },
-    (xhr) => {
-      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-    },
-    (error) => {
-      console.log("An error occurred while loading the FBX file:", error);
-    }
-  );
-
-  for (let i = 0; i < 10000; i++) {
+  for (let i = 0; i < 10000; i++){
     const x = Math.random() * 2000 - 1000;
     const y = Math.random() * 2000 - 1000;
     const z = Math.random() * 2000 - 1000;
-    vertices.push(x, y, z);
+    vertices.push( x, y, z );
   }
-  geometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(vertices, 3)
-  );
+  geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3));
 
   parameters = [
     // [[0.8, 1, 0.5 ], sprite1, 20 ],
     // [[0.8, 1, 0.5 ], sprite1, 15 ],
-    [[0.8, 1, 0.5], sprite1, 20],
+    [[0.8, 1, 0.5 ], sprite1, 20 ],
     // [[0.8, 1, 0.5 ], sprite1, 8 ],
     // [[0.8, 1, 0.5 ], sprite1, 5 ],
   ];
 
-  for (let i = 0; i < parameters.length; i++) {
-    const color = parameters[i][0];
-    const sprite = parameters[i][1];
-    const size = parameters[i][2];
-    materials[i] = new THREE.PointsMaterial({
-      size: size,
-      map: sprite,
-      blending: THREE.AdditiveBlending,
-      depthTest: false,
-      transparent: true,
+  for (let i = 0; i < parameters.length; i ++){
+    const color = parameters[ i ][ 0 ];
+    const sprite = parameters[ i ][ 1 ];
+    const size = parameters[ i ][ 2 ];
+    materials[ i ] = new THREE.PointsMaterial({
+        size: size, map: sprite, blending: THREE.AdditiveBlending, depthTest: false, transparent: true
     });
-    materials[i].color.setHSL(color[0], color[1], color[2]);
-    const particles = new THREE.Points(geometry, materials[i]);
+    materials[ i ].color.setHSL( color[ 0 ], color[ 1 ], color[ 2 ]);
+    const particles = new THREE.Points( geometry, materials[ i ]);
     particles.rotation.x = Math.random() * 6;
     particles.rotation.y = Math.random() * 6;
     particles.rotation.z = Math.random() * 6;
-    scene.add(particles);
+    scene.add( particles );
   }
 
   const skyBoxGeometry = new THREE.SphereGeometry(3000, 1000, 1000);
   const skyBoxMaterial = new THREE.MeshBasicMaterial({
-    map: fondoEspacio,
+    map : fondoEspacio,
     opacity: 0.3,
     side: THREE.BackSide,
     transparent: true,
@@ -398,6 +393,7 @@ function init() {
   light3.position.set(200, -200, -200);
   scene.add(light3);
 }
+
 const renderScene = new RenderPass(scene, camera);
 
 const bloomPass = new BloomPass(
@@ -412,21 +408,19 @@ composer.addPass(renderScene);
 composer.addPass(bloomPass);
 composer.addPass(copyPass);
 
-function onWindowResize() {
+function onWindowResize(){
   windowHalfX = window.innerWidth / 2;
   windowHalfY = window.innerHeight / 2;
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize( window.innerWidth, window.innerHeight);
 }
 
-function onPointerMove(event) {
-  if (event.isPrimary === false) return;
+function onPointerMove( event ){
+  if ( event.isPrimary === false ) return;
   mouseX = event.clientX - windowHalfX;
   mouseY = event.clientY - windowHalfY;
 }
-
-// ...
 
 function animateRotation(object, axis, speed) {
   function animate() {
