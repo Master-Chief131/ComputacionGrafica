@@ -70,6 +70,7 @@ function init() {
 
   const textureLoader = new THREE.TextureLoader();
   const fondoEspacio = textureLoader.load("textures/fondo_space.jpg");
+  // const fondoEspacio = textureLoader.load("models/SKYBOX_sphere.jpg");
   const sprite1 = textureLoader.load( 'textures/luzdeprueba1.png' );
   const fpeach = textureLoader.load('textures/bgpch.png');
   scene.background = fpeach;
@@ -104,6 +105,7 @@ function init() {
     );
   });
 
+  //agregar la plataforma
   const mtlLoader2 = new MTLLoader();
   mtlLoader2.load("models/Platform.mtl", (material2) => {
     material2.preload();
@@ -115,12 +117,12 @@ function init() {
       (object2) => {
         scene.add(object2);
         //move object to the top
-        object2.position.y = -580;
+        object2.position.y = -237;
         //to the left of the box
         object2.position.x = -50;
         //make the object bigger
         object2.scale.x = 25;
-        object2.scale.y = 25;
+        object2.scale.y = 10;
         object2.scale.z = 25;
       },
       (xhr) => {
@@ -197,6 +199,108 @@ function init() {
 	  }
 	);
 	  });
+
+  //Agregar la flor de fuego
+  const mtlLoader5 = new MTLLoader();
+  mtlLoader5.load("models/fire_flower.mtl", (material5) => {
+	material5.preload();
+	console.log(material5);
+	const objLoader5 = new OBJLoader();
+	objLoader5.setMaterials(material5);
+	objLoader5.load(
+	  "models/fire_flower.obj",
+	  (object5) => {
+		scene.add(object5);
+		//move object to the top
+		object5.position.y = 18;
+		//to the left of the box
+		object5.position.x = 100;
+		object5.position.z = -60;
+		//make the object bigger
+		object5.scale.x = 5;
+		object5.scale.y = 5;
+		object5.scale.z = 5;
+    // Realizar la rotación del objeto
+    // object.rotation.x = Math.PI / 4; // Rotación en el eje x
+    // object5.rotation.y = Math.PI / 2; // Rotación en el eje y
+    // object.rotation.z = Math.PI / 3; // Rotación en el eje z
+	  },
+	  (xhr) => {
+		console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+	  },
+	  (error) => {
+		console.log(error);
+	  }
+	);
+	  });
+
+  //Agregar el castillo
+    const mtlLoader6 = new MTLLoader();
+    mtlLoader6.load("models/peach_castle.mtl", (material6) => {
+    material6.preload();
+    console.log(material6);
+    const objLoader6 = new OBJLoader();
+    objLoader6.setMaterials(material6);
+    objLoader6.load(
+      "models/peach_castle.obj",
+      (object6) => {
+      scene.add(object6);
+      //move object to the top
+      object6.position.y = -200;
+      //to the left of the box
+      object6.position.x = 375;
+      object6.position.z = -2000;
+      //make the object bigger
+      object6.scale.x = 5;
+      object6.scale.y = 5;
+      object6.scale.z = 5;
+      // Realizar la rotación del objeto
+      // object.rotation.x = Math.PI / 4; // Rotación en el eje x
+      // object5.rotation.y = Math.PI / 2; // Rotación en el eje y
+      // object.rotation.z = Math.PI / 3; // Rotación en el eje z
+      },
+      (xhr) => {
+      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+      },
+      (error) => {
+      console.log(error);
+      }
+    );
+      });
+
+      //Agregar a la princesa
+      const mtlLoader7 = new MTLLoader();
+      mtlLoader7.load("models/princess_peach.mtl", (material7) => {
+      material7.preload();
+      console.log(material7);
+      const objLoader7 = new OBJLoader();
+      objLoader7.setMaterials(material7);
+      objLoader7.load(
+        "models/princess_peach.obj",
+        (object7) => {
+        scene.add(object7);
+        //move object to the top
+        object7.position.y = 20;
+        //to the left of the box
+        object7.position.x = 375;
+        object7.position.z = -1400;
+        //make the object bigger
+        object7.scale.x = 100;
+        object7.scale.y = 100;
+        object7.scale.z = 100;
+        // Realizar la rotación del objeto
+        // object.rotation.x = Math.PI / 4; // Rotación en el eje x
+        // object5.rotation.y = Math.PI / 2; // Rotación en el eje y
+        // object.rotation.z = Math.PI / 3; // Rotación en el eje z
+        },
+        (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        },
+        (error) => {
+        console.log(error);
+        }
+      );
+        });
 
   for (let i = 0; i < 10000; i++){
     const x = Math.random() * 2000 - 1000;
