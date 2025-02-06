@@ -39,6 +39,6 @@ jobs:
         with:
           project: "albertm-bowser-threejs"
           entrypoint: "app.js"
-          root: ""
+          root: "public/"
           
           
