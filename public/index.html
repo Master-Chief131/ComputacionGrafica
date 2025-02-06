@@ -1,25 +1,32 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
     <head>
-        <title>servidor node</title>
+        <title>Servidor Node</title>
         <style>
-            body{
-                overflow: hidden;
-                margin: 0px;
+            .buttons {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+            }
+            button {
+                margin: 5px;
+                padding: 10px;
+                font-size: 16px;
             }
         </style>
-        <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
-        <script type="importmap">
-            {
-                "imports":{
-                    "three": "./build/three.module.js",
-                    "three/addons/": "./jsm/"
-                }
-            }
-        </script>
     </head>
     <body>
-        <div id="container"></div>
-        <script type = "module" src="Proyecto.js"></script>
+        <div class="buttons">
+            <button id="proyectoBtn">Proyecto</button>
+            <button id="pruebaBtn">Prueba</button>
+        </div>
+        <script>
+            document.getElementById('proyectoBtn').addEventListener('click', function() {
+                window.location.href = 'proyecto.html';
+            });
+            document.getElementById('pruebaBtn').addEventListener('click', function() {
+                window.location.href = 'prueba.html';
+            });
+        </script>
     </body>
 </html>
