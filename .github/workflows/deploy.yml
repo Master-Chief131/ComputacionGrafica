@@ -32,7 +32,7 @@ jobs:
         run: "npm install"
 
       - name: Build step
-        run: "npm start"
+        run: "deno run --allow-net=:3000 --watch ./app.js"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
