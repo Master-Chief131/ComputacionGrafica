@@ -6,8 +6,8 @@ import { MTLLoader } from "./jsm/loaders/MTLLoader.js";
 import Stats from 'three/addons/libs/stats.module.js';
 // standard global variables
 let container, scene, camera, renderer, controls, stats, parameters;
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
+let windowHalfX = globalThis.innerWidth / 2;
+let windowHalfY = globalThis.innerHeight / 2;
 const materials = [];
 const clock = new THREE.Clock();
 // custom global variables
@@ -33,8 +33,8 @@ function init() {
   // });
   
   // CAMERA
-  const SCREEN_WIDTH = window.innerWidth,
-    SCREEN_HEIGHT = window.innerHeight;
+  const SCREEN_WIDTH = globalThis.innerWidth,
+    SCREEN_HEIGHT = globalThis.innerHeight;
   const VIEW_ANGLE = 45,
     ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
     NEAR = 100,
@@ -49,8 +49,8 @@ function init() {
   renderer = new THREE.WebGLRenderer({
     // antialias: true 
   });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixcelRatio);
+  renderer.setSize(globalThis.innerWidth, globalThis.innerHeight);
+  renderer.setPixelRatio(globalThis.devicePixcelRatio);
   renderer.shadowMap.enabled = true;
   renderer.capabilities.logarithmicDepthBuffer = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -62,16 +62,12 @@ function init() {
   
   container = document.getElementById("container");
   container.appendChild(renderer.domElement);
-  // renderer = new THREE.WebGLRenderer();
-  // renderer.setPixelRatio( window.devicePixelRatio );
-  // renderer.setSize( window.innerWidth, window.innerHeight);
-  // document.body.appendChild( renderer.domElement);
   stats = new Stats();
   document.body.appendChild( stats.dom);
     
   document.body.style.touchAction= 'none';
   document.body.addEventListener( 'pointermove', onPointerMove);
-  window.addEventListener( 'resize', onWindowResize);
+  addEventListener( 'resize', onWindowResize);
   
   // CONTROLS
   controls = new OrbitControls(camera, renderer.domElement);
@@ -409,20 +405,20 @@ function init() {
       //add a light that illuminates everything evenly
 
       // LIGHT
-  let light1, light2, light3;
+  // let light1, light2, light3;
 
   // Primera luz: Luz direccional
-  light1 = new THREE.DirectionalLight(0xffffff, 2.5);
+  const light1 = new THREE.DirectionalLight(0xffffff, 2.5);
   light1.position.set(1, 1, 1);
   scene.add(light1);
 
   // Segunda luz: Luz puntual
-  light2 = new THREE.PointLight(0x990085, 10000000, 1000);
+  const light2 = new THREE.PointLight(0x990085, 10000000, 1000);
   light2.position.set(-200, 200, 200);
   scene.add(light2);
 
   // Tercera luz: Luz puntual
-  light3 = new THREE.PointLight(0x990099, 10000000, 1000);
+  const light3 = new THREE.PointLight(0x990099, 10000000, 1000);
   light3.position.set(200, -200, -200);
   scene.add(light3);
 
@@ -443,11 +439,11 @@ function init() {
     composer.addPass(copyPass);
 
     function onWindowResize(){
-      windowHalfX = window.innerWidth / 2;
-      windowHalfY = window.innerHeight / 2;
-      camera.aspect = window.innerWidth / window.innerHeight;
+      windowHalfX = globalThis.innerWidth / 2;
+      windowHalfY = globalThis.innerHeight / 2;
+      camera.aspect = globalThis.innerWidth / globalThis.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize( window.innerWidth, window.innerHeight);
+      renderer.setSize( globalThis.innerWidth, globalThis.innerHeight);
     }
     function onPointerMove( event ){
       if ( event.isPrimary === false ) return;

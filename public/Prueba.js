@@ -17,8 +17,8 @@ function init() {
   // SCENE
   scene = new THREE.Scene();
   // CAMERA
-  const SCREEN_WIDTH = window.innerWidth,
-    SCREEN_HEIGHT = window.innerHeight;
+  const SCREEN_WIDTH = globalThis.innerWidth,
+    SCREEN_HEIGHT = globalThis.innerHeight;
   const VIEW_ANGLE = 45,
     ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
     NEAR = 0.1,
