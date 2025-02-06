@@ -5,9 +5,9 @@ import { MTLLoader } from "./jsm/loaders/MTLLoader.js";
 
 // standard global variables
 let container, scene, camera, renderer, controls;
-const clock = new THREE.Clock();
+// const clock = new THREE.Clock();
 // custom global variables
-let cube;
+// let cube;
 
 init();
 animate();

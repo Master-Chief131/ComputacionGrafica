@@ -9,9 +9,9 @@ let container, scene, camera, renderer, controls, stats, parameters;
 let windowHalfX = globalThis.innerWidth / 2;
 let windowHalfY = globalThis.innerHeight / 2;
 const materials = [];
-const clock = new THREE.Clock();
+// const clock = new THREE.Clock();
 // custom global variables
-let cube;
+// let cube;
 
 // var listener = new THREE.AudioListener();
 // var audio = new THREE.Audio(listener);
