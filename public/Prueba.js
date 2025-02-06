@@ -4,10 +4,10 @@ import { OBJLoader } from "./jsm/loaders/OBJLoader.js";
 import { MTLLoader } from "./jsm/loaders/MTLLoader.js";
 
 // standard global variables
-var container, scene, camera, renderer, controls;
-var clock = new THREE.Clock();
+let container, scene, camera, renderer, controls;
+const clock = new THREE.Clock();
 // custom global variables
-var cube;
+let cube;
 
 init();
 animate();
@@ -17,9 +17,9 @@ function init() {
   // SCENE
   scene = new THREE.Scene();
   // CAMERA
-  var SCREEN_WIDTH = window.innerWidth,
+  const SCREEN_WIDTH = window.innerWidth,
     SCREEN_HEIGHT = window.innerHeight;
-  var VIEW_ANGLE = 45,
+  const VIEW_ANGLE = 45,
     ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
     NEAR = 0.1,
     FAR = 20000;
@@ -175,7 +175,7 @@ function init() {
   
 
   // LIGHT
-  var light = new THREE.AmbientLight(0xffffff, 3.5);
+  const light = new THREE.AmbientLight(0xffffff, 3.5);
   scene.add(light);
   //add a light that illuminates everything evenly
 }

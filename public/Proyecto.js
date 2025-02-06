@@ -5,13 +5,13 @@ import { FBXLoader } from "./jsm/loaders/FBXLoader.js";
 import { MTLLoader } from "./jsm/loaders/MTLLoader.js";
 import Stats from 'three/addons/libs/stats.module.js';
 // standard global variables
-var container, scene, camera, renderer, controls, stats, parameters;
+let container, scene, camera, renderer, controls, stats, parameters;
 let windowHalfX = window.innerWidth / 2;
 let windowHalfY = window.innerHeight / 2;
 const materials = [];
-var clock = new THREE.Clock();
+const clock = new THREE.Clock();
 // custom global variables
-var cube;
+let cube;
 
 // var listener = new THREE.AudioListener();
 // var audio = new THREE.Audio(listener);
@@ -33,9 +33,9 @@ function init() {
   // });
   
   // CAMERA
-  var SCREEN_WIDTH = window.innerWidth,
+  const SCREEN_WIDTH = window.innerWidth,
     SCREEN_HEIGHT = window.innerHeight;
-  var VIEW_ANGLE = 45,
+  const VIEW_ANGLE = 45,
     ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
     NEAR = 100,
     FAR = 10000;
@@ -409,7 +409,7 @@ function init() {
       //add a light that illuminates everything evenly
 
       // LIGHT
-  var light1, light2, light3;
+  let light1, light2, light3;
 
   // Primera luz: Luz direccional
   light1 = new THREE.DirectionalLight(0xffffff, 2.5);

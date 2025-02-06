@@ -1,8 +1,8 @@
-var controlAudio = document.getElementById('Toque');
-var audio = document.getElementById('mySong');
-var audioPlaying = false;
-var firstPlay = true;
-var currentTime = 0;
+let controlAudio = document.getElementById('Toque');
+let audio = document.getElementById('mySong');
+let audioPlaying = false;
+let firstPlay = true;
+let currentTime = 0;
 
 document.body.addEventListener('click', function() {
    if (!audioPlaying) {
