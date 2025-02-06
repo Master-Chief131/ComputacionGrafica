@@ -30,9 +30,6 @@ jobs:
 
       - name: Install step
         run: "npm install"
-      
-      - name: Run Node.js
-        run: npm start
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
