@@ -1,32 +1,28 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Servidor Node</title>
-        <style>
-            .buttons {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-            }
-            button {
-                margin: 5px;
-                padding: 10px;
-                font-size: 16px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="buttons">
-            <button id="proyectoBtn">Proyecto</button>
-            <button id="pruebaBtn">Prueba</button>
-        </div>
-        <script>
-            document.getElementById('proyectoBtn').addEventListener('click', function() {
-                window.location.href = 'proyecto.html';
-            });
-            document.getElementById('pruebaBtn').addEventListener('click', function() {
-                window.location.href = 'prueba.html';
-            });
-        </script>
-    </body>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio 3D</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+
+<div class="container">
+    <h1 style="color:rgb(0, 0, 0);">Mis Proyectos 3D</h1>
+    <div class="project" onclick="location.href='proyecto.html'">Proyecto 1</div>
+    <div class="project" onclick="location.href='prueba.html'">Proyecto 2</div>
+</div>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.156.1/build/three.module.min.js"
+    }
+}
+</script>
+
+<script type="module" src="js/index_2.js"></script>
+
+</body>
 </html>

@@ -1,0 +1,189 @@
+/* Archivo para probar diseños de codepen, el archivo real es index.css */
+
+body {
+    font-family: system-ui, sans-serif, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background-color: #f4f4f4; */
+    color: #ffffff;
+    place-content: center;
+
+    min-height: 100vh;
+    background: #212534;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* padding-top: 2rem; */
+    /* padding-bottom: 2rem; */
+    box-sizing: border-box;
+}
+
+header {
+    /* background-color: #000000; */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* main {
+    padding: 20px;
+} */
+
+section {
+    margin: 20px;
+    display: flex;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.text {
+    font-weight: 900;
+    font-size: 5vw;
+    color: #1f202000;
+    /* -webkit-text-stroke: 1px #1f2020; */
+    position: relative;
+    background-clip: text;
+    overflow: clip;
+    background-color: #fefcef;
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      /* z-index: -1; */
+      background-color: #3cf5;
+      width: 180%;
+      top: 50%;
+      left: 50%;
+      aspect-ratio: 1;
+      translate: -50% 0;
+      border-top-left-radius: 60% 80%;
+      border-top-right-radius: 50% 80%;
+      border-bottom-left-radius: 60% 80%;
+      border-bottom-right-radius: 50% 80%;
+      mix-blend-mode: multiply;
+      /* background-blend-mode: color; */
+      animation: rot 10s linear infinite;
+    }
+    &:after {
+      animation-delay: -4s;
+      animation-duration: 8s;
+    }
+  }
+@keyframes rot {
+    to {
+        rotate: 360deg;
+    }
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#proyectoBtn {
+    background-image: url('https://lh3.googleusercontent.com/d/1OYcbEmf67yPGTlPHXScAmO5JvG4gCfVM');
+    background-size: cover;
+    color: white;
+    border: none;
+}
+
+@property --rotate {
+    syntax: "<angle>";
+    initial-value: 132deg;
+    inherits: false;
+}
+  
+:root {
+    --card-height: 40vh;
+    --card-width: calc(var(--card-height) / 1.5);
+}
+  
+  
+.card {
+    background: #191c29;
+    width: var(--card-width);
+    height: var(--card-height);
+    margin-left: 5vh;
+    margin-right: 5vh;
+    padding: 3px;
+    position: relative;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    font-size: 1.5em;
+    color: rgb(88 199 250 / 0%);
+    cursor: pointer;
+    font-family: cursive;
+}
+  
+.card:hover {
+    color: rgb(88 199 250 / 100%);
+    transition: color 1s;
+}
+.card:hover:before, .card:hover:after {
+    animation: none;
+    opacity: 0;
+}
+  
+  
+.card::before {
+    content: "";
+    width: 104%;
+    height: 102%;
+    border-radius: 8px;
+    background-image: linear-gradient(
+      var(--rotate)
+      , #5ddcff, #3c67e3 43%, #4e00c2);
+      position: absolute;
+      z-index: -1;
+      top: -1%;
+      left: -2%;
+      animation: spin 2.5s linear infinite;
+}
+  
+.card::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--card-height) / 6);
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    transform: scale(0.8);
+    filter: blur(calc(var(--card-height) / 6));
+    background-image: linear-gradient(
+      var(--rotate)
+      , #5ddcff, #3c67e3 43%, #4e00c2);
+      opacity: 1;
+    transition: opacity .5s;
+    animation: spin 2.5s linear infinite;
+}
+  
+@keyframes spin {
+    0% {
+      --rotate: 0deg;
+    }
+    100% {
+      --rotate: 360deg;
+    }
+}
+  
+a {
+    color: #212534;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: bold;
+    margin-top: 2rem;
+}

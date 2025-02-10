@@ -1,194 +1,256 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { OBJLoader } from "./jsm/loaders/OBJLoader.js";
-import { MTLLoader } from "./jsm/loaders/MTLLoader.js";
+import { OrbitControls } from "./jsm/controls/OrbitControls.js";
+// import { OBJLoader } from "./jsm/loaders/OBJLoader.js";
+// import { MTLLoader } from "./jsm/loaders/MTLLoader.js";
+import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
 
 // standard global variables
-var container, scene, camera, renderer, controls;
-var clock = new THREE.Clock();
-// custom global variables
-var cube;
+var scene, camera, renderer, parameters;
+const vertices = [];
+const geometry = new THREE.BufferGeometry();
+const materials = [];
+const textureLoader = new THREE.TextureLoader();
+let particleData;
 
 init();
 animate();
+// render();
 
-// FUNCTIONS
-function init() {
-  // SCENE
+function initScene() {
   scene = new THREE.Scene();
-  // CAMERA
-  var SCREEN_WIDTH = window.innerWidth,
-    SCREEN_HEIGHT = window.innerHeight;
-  var VIEW_ANGLE = 45,
-    ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
-    NEAR = 0.1,
-    FAR = 20000;
-  camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-  scene.add(camera);
-  camera.position.set(0, 150, 400);
-  camera.lookAt(scene.position);
-  // RENDERER
+  const backgroundTexture = textureLoader.load("textures/bgpch.png");
+  scene.background = backgroundTexture;
+}
+
+function initCamera() {
+  camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(8, 8, 10);
+}
+
+function initRenderer(container) {
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  container = document.getElementById("container");
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1;
+  renderer.outputEncoding = THREE.sRGBEncoding;
   container.appendChild(renderer.domElement);
-  // CONTROLS
-  controls = new OrbitControls(camera, renderer.domElement);
+}
 
-  const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load("textures/bg.jpeg");
-  scene.background = texture;
+function initControls() {
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.addEventListener('change', render);
+  controls.minDistance = 1;
+  controls.maxDistance = 45;
+  controls.target.set(0.03, 0.01, -0.01);
+  controls.update();
+}
 
-  const mtlLoader = new MTLLoader();
-  mtlLoader.load("models/bowser.mtl", (material) => {
-    material.preload();
-    console.log(material);
-    const objLoader = new OBJLoader();
-    objLoader.setMaterials(material);
-    objLoader.load(
-      "models/bowser.obj",
-      (object) => {
-        scene.add(object);
-        //move object to the top
-        object.position.y = 70;
-        //to the left of the box
-        object.position.x = -290;
+function initLights() {
+  const light = new THREE.PointLight(0xffffff, 10, 50);
+  light.position.set(-20, 20, 20);
+  scene.add(light);
+}
 
-        object.position.z = -60;
-        //make the object bigger
-        object.scale.x = 15;
-        object.scale.y = 15;
-        object.scale.z = 15;
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  });
-
-  const mtlLoader2 = new MTLLoader();
-  mtlLoader2.load("models/Platform.mtl", (material2) => {
-    material2.preload();
-    console.log(material2);
-    const objLoader2 = new OBJLoader();
-    objLoader2.setMaterials(material2);
-    objLoader2.load(
-      "models/Platform.obj",
-      (object2) => {
-        scene.add(object2);
-        //move object to the top
-        object2.position.y = -580;
-        //to the left of the box
-        object2.position.x = -50;
-        //make the object bigger
-        object2.scale.x = 25;
-        object2.scale.y = 25;
-        object2.scale.z = 25;
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  });
-
-  //add the piano
-  const mtlLoader3 = new MTLLoader();
-  mtlLoader3.load("models/piano1.mtl", (material3) => {
-    material3.preload();
-    console.log(material3);
-    const objLoader3 = new OBJLoader();
-    objLoader3.setMaterials(material3);
-    objLoader3.load(
-      "models/piano1.obj",
-      (object3) => {
-        scene.add(object3);
-        //move object to the top
-        object3.position.y = 0;
-        //to the left of the box
-        object3.position.x = -130;
-		object3.position.z = -40;
-        //make the object bigger
-        object3.scale.x = 25;
-        object3.scale.y = 25;
-        object3.scale.z = 25;
-        //rotate the object horizontally
-        object3.rotation.y = 3;
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  });
- 
-  /* No funciona aun
-  //Agregar la silla
-  const mtlLoader4 = new MTLLoader();
-  mtlLoader4.load("models/silla.mtl", (material4) => {
-	material4.preload();
-	console.log(material4);
-	const objLoader4 = new OBJLoader();
-	objLoader4.setMaterials(material4);
-	objLoader4.load(
-	  "models/silla.obj",
-	  (object4) => {
-		scene.add(object4);
-		//move object to the top
-		object4.position.y = 80;
-		//to the left of the box
-		object4.position.x = -50;
-		object4.position.z = -40;
-		//make the object bigger
-		object4.scale.x = 25;
-		object4.scale.y = 25;
-		object4.scale.z = 25;
-		//rotate the object horizontally
-		object4.rotation.y = 3;
-	  },
-	  (xhr) => {
-		console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-	  },
-	  (error) => {
-		console.log(error);
-	  }
-	);
-	  });
-*/
-
-
-  const skyBoxGeometry = new THREE.BoxGeometry(10000, 10000, 10000);
+function initSkybox() {
+  const skyTexture = textureLoader.load("textures/fondo_space.jpg");
+  const skyBoxGeometry = new THREE.SphereGeometry(50, 50, 50);
   const skyBoxMaterial = new THREE.MeshBasicMaterial({
-    color: 0x990099,
-    side: THREE.BackSide,
+      map: skyTexture,
+      opacity: 0.2,
+      side: THREE.BackSide,
+      transparent: true,
   });
   const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
   scene.add(skyBox);
-  scene.fog = new THREE.FogExp2(0x990099, 0.00025);
+}
+
+function initModel() {
+  const loader = new GLTFLoader();
+  loader.load('models/escena_completa.glb', function(gltf) {
+      scene.add(gltf.scene);
+      render();
+  });
+}
+
+function initParticles() {
+  const particleCount = 500;
+  const particles = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const velocities = new Float32Array(particleCount * 3);
+  const sizes = new Float32Array(particleCount);
+
+  for (let i = 0; i < particleCount; i++) {
+      let x = (Math.random() - 0.5) * 50;
+      let y = (Math.random() - 0.5) * 50;
+      let z = (Math.random() - 0.5) * 50;
+
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+
+      velocities[i * 3] = (Math.random() - 0.5) * 0.02;
+      velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.02;
+      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.02;
+
+      sizes[i] = Math.random() * 2 + 1;
+  }
+
+  particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  particles.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+  const particleTexture = textureLoader.load('textures/luzdeprueba1.png');
+  const material = new THREE.PointsMaterial({
+      map: particleTexture,
+      size: 1.5,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+  });
+
+  const particleSystem = new THREE.Points(particles, material);
+  scene.add(particleSystem);
+
+  return { particles, velocities, particleSystem };
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  render();
+}
+
+
+function init() {
+  const container = document.createElement("div");
+  document.body.appendChild(container);
+
+  initScene();
+    initCamera();
+    initRenderer(container);
+    initControls();
+    initLights();
+    initSkybox();
+    initModel();
+    particleData = initParticles();
+
+    window.addEventListener('resize', onWindowResize);
+}
+
+  // CAMERA
+  // camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 100);
+  // camera.position.set(8, 8, 10);
+
+  // SCENE
+  // scene = new THREE.Scene();
+
+  // Agregar partículas a la escena
+  // particleData = createParticles(scene);
+
+  // scene.add(new THREE.AmbientLight(0xFF00FF, 0.5) );
+
+  // BACKGROUND
+  // const fondoEspacio = textureLoader.load("textures/fondo_space.jpg");
+  // const sprite1 = textureLoader.load( 'textures/luzdeprueba1.png' );
+  // const fpeach = textureLoader.load('textures/bgpch.png');
+  // scene.background = fpeach;
+
+  // PARTICLES
   
 
+  // SKYBOX
+  // const skyBoxGeometry = new THREE.SphereGeometry(50, 50, 50);
+  // const skyBoxMaterial = new THREE.MeshBasicMaterial({
+  //   map : fondoEspacio,
+  //   opacity: 0.2,
+  //   side: THREE.BackSide,
+  //   transparent: true,
+  // });
+  // const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
+  // scene.add(skyBox);
+  // const speed = 10; // Velocidad de movimiento del skybox
+  // Actualizar la posición del skybox
+  // skyBox.position.x += speed;
+  // skyBox.position.y += speed;
+  // skyBox.position.z += speed;
+
   // LIGHT
-  var light = new THREE.AmbientLight(0xffffff, 3.5);
-  scene.add(light);
-  //add a light that illuminates everything evenly
-}
+  // var light1, light2, light3;
+
+  // Primera luz: Luz direccional
+    // light1 = new THREE.DirectionalLight(0xffffff, 2.5);
+    // light1.position.set(20, 20, 20);
+    // scene.add(light1);
+  
+    // Segunda luz: Luz puntual
+    // light2 = new THREE.PointLight(0xffffff, 10, 50);
+    // light2.position.set(-20, 20, 20);
+    // scene.add(light2);
+  
+    // Tercera luz: Luz puntual
+    // light3 = new THREE.PointLight(0x990099, 100, 100);
+    // light3.position.set(20, -20, -20);
+    // scene.add(light3);
+
+  // const dirLight = new THREE.DirectionalLight(0xFFFFFF, 2.5);
+  // dirLight.position.set(15, 20, 15);
+  // dirLight.castShadow = true;
+  // dirLight.shadow.camera.right = 2;
+  // dirLight.shadow.camera.left = -2;
+  // dirLight.shadow.camera.top = 2;
+  // dirLight.shadow.camera.bottom = -2;
+  // dirLight.shadow.mapSize.width = 1024;
+  // dirLight.shadow.mapSize.height = 1024;
+  // scene.add(dirLight);
+
+  // MODEL
+  // const loader = new GLTFLoader();
+  // loader.load('models/escena_completa.glb', function(gltf) {
+  //   scene.add(gltf.scene);
+  //   render();
+  // } );
+
+  // RENDERER
+  // renderer = new THREE.WebGLRenderer({ antialias: true });
+  // renderer.setPixelRatio(window.devicePixelRatio);
+  // renderer.setSize(window.innerWidth, window.innerHeight);
+  // renderer.toneMapping = THREE.ACESFilmicToneMapping
+  // renderer.toneMappingExposure = 1
+  // renderer.outputEncoding = THREE.sRGBEncoding;
+  // container.appendChild(renderer.domElement);
+
+  // CONTROLS
+  // const controls = new OrbitControls(camera, renderer.domElement);
+  // controls.addEventListener('change', render);
+  // controls.minDistance = 1;
+  // controls.maxDistance = 45;
+  // controls.target.set(0.03, 0.01, -0.01);
+  // controls.update();
+  // window.addEventListener('resize', onWindowResize);
+// }
 
 function animate() {
   requestAnimationFrame(animate);
+
+  const positions = particleData.particles.attributes.position.array;
+  const velocities = particleData.velocities;
+
+  for (let i = 0; i < positions.length; i += 3) {
+      positions[i] += velocities[i];
+      positions[i + 1] += velocities[i + 1];
+      positions[i + 2] += velocities[i + 2];
+
+      if (positions[i] > 25 || positions[i] < -25) velocities[i] *= -1;
+      if (positions[i + 1] > 25 || positions[i + 1] < -25) velocities[i + 1] *= -1;
+      if (positions[i + 2] > 25 || positions[i + 2] < -25) velocities[i + 2] *= -1;
+  }
+
+  particleData.particles.attributes.position.needsUpdate = true;
+  
   render();
-  update();
 }
 
-function update() {
-  controls.update();
-}
 
 function render() {
   renderer.render(scene, camera);

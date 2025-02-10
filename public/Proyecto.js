@@ -210,7 +210,7 @@ function init() {
 		console.log(error);
 	  }
 	);
-	  });
+  });
 
   //Agregar la flor de fuego
   const mtlLoader5 = new MTLLoader();
@@ -240,7 +240,7 @@ function init() {
 		console.log(error);
 	  }
 	);
-	  });
+  });
 
   //Agregar el castillo
     // const mtlLoader6 = new MTLLoader();
@@ -272,35 +272,35 @@ function init() {
     // );
     //   });
 
-      //Agregar a la princesa
-      const mtlLoader7 = new MTLLoader();
-      mtlLoader7.load("models/princess_peach.mtl", (material7) => {
-      material7.preload();
-      console.log(material7);
-      const objLoader7 = new OBJLoader();
-      objLoader7.setMaterials(material7);
-      objLoader7.load(
-        "models/princess_peach.obj",
-        (object7) => {
-        scene.add(object7);
-        //move object to the top
-        object7.position.y = 5;
-        //to the left of the box
-        object7.position.x = 230;
-        object7.position.z = -100;
-        //make the object bigger
-        object7.scale.x = 125;
-        object7.scale.y = 125;
-        object7.scale.z = 125;
-        },
-        (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-        },
-        (error) => {
-        console.log(error);
-        }
-      );
-        });
+  //Agregar a la princesa
+  const mtlLoader7 = new MTLLoader();
+  mtlLoader7.load("models/princess_peach.mtl", (material7) => {
+  material7.preload();
+  console.log(material7);
+  const objLoader7 = new OBJLoader();
+  objLoader7.setMaterials(material7);
+  objLoader7.load(
+    "models/princess_peach.obj",
+    (object7) => {
+    scene.add(object7);
+    //move object to the top
+    object7.position.y = 5;
+    //to the left of the box
+    object7.position.x = 230;
+    object7.position.z = -100;
+    //make the object bigger
+    object7.scale.x = 125;
+    object7.scale.y = 125;
+    object7.scale.z = 125;
+    },
+    (xhr) => {
+    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    },
+    (error) => {
+    console.log(error);
+    }
+  );
+  });
 
   //Agregar tuberia
   const mtlLoader8 = new MTLLoader();
@@ -330,7 +330,7 @@ function init() {
 		console.log(error);
 	  }
 	);
-	  });
+  });
 
         
   const fbxLoader = new FBXLoader();
@@ -426,11 +426,11 @@ function init() {
   light3.position.set(200, -200, -200);
   scene.add(light3);
 
-    }
+}
 
-    const renderScene = new RenderPass(scene, camera);
+  const renderScene = new RenderPass(scene, camera);
 
-    const bloomPass = new BloomPass(
+  const bloomPass = new BloomPass(
       /* strength */ 100, /* kernelSize */ 2500, /* sigma */ 4, /* resolutionScale */ 256
     );
 
@@ -466,7 +466,7 @@ function init() {
       }
     
       animate();
-    }    
+    }
 
     // function animateRotation(object, axis, speed) {
     //   function animate() {
