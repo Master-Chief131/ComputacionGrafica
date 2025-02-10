@@ -7,7 +7,7 @@ var currentTime = 0;
 document.body.addEventListener('click', function() {
    if (!audioPlaying) {
       if (firstPlay) {
-         audio.currentTime = 29;
+         // audio.currentTime = currentTime;
          firstPlay = false;
       }
       audio.play().then(function() {
